@@ -1,0 +1,19 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["^build"]
+    },
+    "dev": {
+      "dependsOn": ["@ruijadom/db#build"],
+      "cache": false
+    },
+    "clean": {
+      "cache": false
+    },
+    "start": {
+      "cache": false
+    }
+  }
+}
