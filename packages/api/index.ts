@@ -3,7 +3,7 @@ import cors from "cors";
 import { inferAsyncReturnType, initTRPC } from "@trpc/server";
 import { z } from "zod";
 import * as trpcExpress from "@trpc/server/adapters/express";
-import { prisma } from "@ruijadom/db/dist";
+import { prisma } from "../prisma/dist";
 
 import {
   createStakingSchema,

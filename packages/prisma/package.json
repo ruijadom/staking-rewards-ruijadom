@@ -1,5 +1,5 @@
 {
-  "name": "@ruijadom/db",
+  "name": "@ruijadom/prisma",
   "private": true,
   "version": "0.0.0",
   "main": "./dist/index.js",

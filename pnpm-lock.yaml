@@ -54,9 +54,9 @@ importers:
 
   packages/api:
     dependencies:
-      '@ruijadom/db':
+      '@ruijadom/prisma':
         specifier: ^0.0.0
-        version: link:../db
+        version: link:../prisma
       '@trpc/server':
         specifier: ^10.10.0
         version: 10.10.0
@@ -86,7 +86,7 @@ importers:
         specifier: ^4.9.5
         version: 4.9.5
 
-  packages/db:
+  packages/prisma:
     dependencies:
       '@prisma/client':
         specifier: ^4.9.0
