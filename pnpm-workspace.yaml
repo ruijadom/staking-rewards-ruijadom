@@ -1,3 +1,6 @@
 packages:
   - 'apps/*'
-  - 'packages/*'
+  - packages/api  
+  - packages/prisma
+  - packages/utils
+  - packages/config/*
