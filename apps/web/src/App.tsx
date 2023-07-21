@@ -24,13 +24,25 @@ export default function App() {
   const { updateStakingStore, stakingsStore, currencyStore } = useStore();
   const mutation = trpc.updateStaking.useMutation();
 
+  const [queryFilter, setQueryFilter] = React.useState("");
+
   const {
     data: stakingList,
     error,
     isError,
     isLoading,
     isSuccess,
-  } = trpc.getStakings.useQuery();
+  } = trpc.getStakings.useQuery(undefined, {
+    select: (stakings) =>
+      stakings.filter((staking) =>
+        Object.values(staking).some((value) =>
+          value
+            .toString()
+            .toLowerCase()
+            .includes(queryFilter.toLowerCase())
+        )
+      ),
+  });
 
   const mutateStaking = (id: string, staking: any) => {
     mutation.mutate({ id, ...staking });
@@ -77,6 +89,8 @@ export default function App() {
                 placeholder="Search"
                 type="search"
                 autoComplete="off"
+                value={queryFilter || ""}
+                onChange={(e) => setQueryFilter(e.target.value)}
               />
             </div>
           </form>
@@ -97,9 +111,20 @@ export default function App() {
         </SheetHeader>
 
         <SheetBody className="text-xs font-normal before:block before:h-1 before:leading-xl">
-          {!isLoading &&
+          {isLoading && (
+            <SheetRow>
+              <SheetCell className="px-3" colSpan={3}>
+                ...is loading
+              </SheetCell>
+            </SheetRow>
+          )}
+
+          {isSuccess &&
             stakingsStore.map(({ id, ...staking }) => (
-              <SheetRow key={id} className="bg-lightest hover:shadow-focus h-full">
+              <SheetRow
+                key={id}
+                className="bg-lightest hover:shadow-focus h-full"
+              >
                 {Object.entries(staking).map(([key, value], index, entries) => (
                   <SheetCell
                     key={key}
@@ -143,13 +168,6 @@ export default function App() {
                 ))}
               </SheetRow>
             ))}
-          : (
-          <SheetRow>
-            <SheetCell className="px-3" colSpan={3}>
-              ...is loading
-            </SheetCell>
-          </SheetRow>
-          )
         </SheetBody>
       </Sheet>
     </div>
