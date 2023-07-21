@@ -20,6 +20,9 @@ importers:
       '@ruijadom/prisma':
         specifier: workspace:*
         version: link:../../packages/prisma
+      '@ruijadom/tailwind-config':
+        specifier: workspace:*
+        version: link:../../packages/config/tailwind
       '@ruijadom/utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -88,7 +91,7 @@ importers:
   packages/api:
     dependencies:
       '@ruijadom/prisma':
-        specifier: ^0.0.0
+        specifier: '*'
         version: link:../prisma
       '@trpc/server':
         specifier: ^10.10.0

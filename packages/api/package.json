@@ -10,7 +10,7 @@
     "clean": "rm -rf node_modules dist .turbo"
   },
   "dependencies": {
-    "@ruijadom/prisma": "^0.0.0",
+    "@ruijadom/prisma": "*",
     "@trpc/server": "^10.10.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",

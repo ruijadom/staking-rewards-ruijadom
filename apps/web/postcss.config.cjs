@@ -1,7 +1,2 @@
-module.exports = {
-  plugins: {
-    "postcss-import": {},
-    tailwindcss: {},
-    autoprefixer: {},
-  },
-};
+// @ts-ignore
+module.exports = require("@ruijadom/tailwind-config/postcss");

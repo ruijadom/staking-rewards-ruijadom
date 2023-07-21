@@ -13,6 +13,7 @@
     "@ruijadom/api": "workspace:*",
     "@ruijadom/prisma": "workspace:*",
     "@ruijadom/utils": "workspace:*",
+    "@ruijadom/tailwind-config": "workspace:*",
     "@tanstack/react-query": "^4.24.4",
     "@trpc/client": "^10.10.0",
     "@trpc/react-query": "^10.10.0",
