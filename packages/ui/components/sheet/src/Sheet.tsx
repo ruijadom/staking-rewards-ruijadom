@@ -21,7 +21,7 @@ export const Sheet = React.forwardRef<HTMLTableElement, SheetProps>(
       <table
         ref={ref}
         className={cn(
-          "w-full relative caption-top border-collapse text-xs leading-xs font-normal",
+          "w-full relative caption-top",
           className
         )}
         {...props}

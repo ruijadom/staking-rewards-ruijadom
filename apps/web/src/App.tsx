@@ -52,9 +52,9 @@ export default function App() {
   const stakingKeys = getUniqueKeys(stakingsStore);
 
   return (
-    <div className="mx-auto mt-[68px] max-w-[615px] overflow-hidden">
-      <Sheet>
-        <SheetCaption className="mb-3 space-y-1 text-left">
+    <div className="mx-auto mt-[68px] max-w-[615px] ">
+      <Sheet className="border-separate border-spacing-y-1">
+        <SheetCaption className="mb-3 space-y-1.5 text-left">
           <h1 className="text-xl font-bold text-left">
             Your Personal Staking Calculator
           </h1>
@@ -73,7 +73,7 @@ export default function App() {
 
               <Input
                 id="search"
-                className="bg-lighter text-lighter-foreground block w-full pl-10 pr-3 h-[32px] rounded-md"
+                className="appearance-none bg-lighter focus:outline-none focus:ring-1 focus:shadow-outline text-lighter-foreground block w-full pl-10 pr-3 h-[29px] rounded-sm"
                 placeholder="Search"
                 type="search"
                 autoComplete="off"
@@ -86,7 +86,7 @@ export default function App() {
             {stakingKeys.map((key) => (
               <SheetHead
                 key={key}
-                className={`w-1/3 text-center first:rounded-l last:rounded-r h-[32px]`}
+                className={`w-1/3 text-center first:rounded-l-sm last:rounded-r-sm h-[32px]`}
               >
                 {`${capitalizedWords(key)} ${
                   key === "annualReward" ? `in ${currencyStore}` : ""
@@ -96,24 +96,24 @@ export default function App() {
           </SheetRow>
         </SheetHeader>
 
-        <SheetBody className="text-xs font-normal before:leading-xl ">
+        <SheetBody className="text-xs font-normal before:block before:h-1 before:leading-xl">
           {!isLoading &&
             stakingsStore.map(({ id, ...staking }) => (
-              <SheetRow key={id}>
+              <SheetRow key={id} className="bg-lightest hover:shadow-focus h-full">
                 {Object.entries(staking).map(([key, value], index, entries) => (
                   <SheetCell
                     key={key}
-                    className={`whitespace-nowrap first:rounded-l last:rounded-r h-[32px] ${
+                    className={`whitespace-nowrap first:rounded-l-sm last:rounded-r-sm h-[32px] ${
                       index !== entries.length - 1
-                        ? "border-accent border-r"
+                        ? "border-darker border-r"
                         : ""
                     }`}
                   >
-                    <div className="flex ">
+                    <div className="flex">
                       <div className="relative w-full">
                         <Input
                           type="text"
-                          className="bg-lightest text-lightest-foreground py-2 pl-3 pr-6 "
+                          className="bg-transparent text-center text-lightest-foreground py-2 pl-3 pr-6 "
                           placeholder="Price"
                           value={value || ""}
                           onChange={(e) =>
