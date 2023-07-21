@@ -62,6 +62,7 @@ export default function App() {
   }
 
   const stakingKeys = getUniqueKeys(stakingsStore);
+  
 
   return (
     <div className="mx-auto mt-[68px] max-w-[615px] ">
@@ -168,6 +169,14 @@ export default function App() {
                 ))}
               </SheetRow>
             ))}
+
+          {isError && (
+            <SheetRow>
+              <SheetCell className="px-3" colSpan={3}>
+                {error}
+              </SheetCell>
+            </SheetRow>
+          )}
         </SheetBody>
       </Sheet>
     </div>
