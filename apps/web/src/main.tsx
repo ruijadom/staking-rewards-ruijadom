@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 
-import "./styles/globals.css";
+import "@ruijadom/ui/styles/globals.css"
 
 import { trpc } from "./utils/trpc";
 
