@@ -38,6 +38,7 @@ export default function App() {
 
   useEffect(() => {
     if (stakingList) {
+      console.log(stakingList)
       useStore.setState((state) => ({
         ...state,
         stakingsStore: stakingList,
