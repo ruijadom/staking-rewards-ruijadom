@@ -18,7 +18,6 @@ export const stackingData: StakingListProps[] = Array.from(
   }),
 );
 
-
 export const stakings = [
   {
     price: "1000",

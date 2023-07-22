@@ -8,6 +8,7 @@
     "build": "pnpm exec prisma generate && tsc --declaration",
     "db:migrate:dev": "pnpm exec prisma migrate dev",
     "db:seed": "pnpm exec prisma db seed",
+    "db:setup": "pnpm build && pnpm exec prisma migrate dev --name init && pnpm exec prisma db seed",
     "db:studio": "npx prisma studio",
     "clean": "rm -rf node_modules dist .turbo"
   },

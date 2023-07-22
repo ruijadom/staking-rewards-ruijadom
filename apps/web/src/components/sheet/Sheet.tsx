@@ -35,11 +35,11 @@ interface SheetProps {
   isSuccess: boolean;
   updateStore: (
     id: UpdateStakingInput["id"],
-    staking: UpdateStakingInput
+    staking: UpdateStakingInput,
   ) => void;
   mutateStaking: (
     id: UpdateStakingInput["id"],
-    staking: UpdateStakingInput
+    staking: UpdateStakingInput,
   ) => void;
 }
 
@@ -69,28 +69,6 @@ export const Sheet = ({
       inputRef.current?.focus();
     }
   }, [editingCell]);
-
-  // Event listener for the Escape key
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      
-      if (e.key === "Escape") {
-        console.log(inputRef.current?.value)
-        console.log(inputRef.current?.id)
-        console.log(inputRef.current?.getAttribute("itemID"))
-        
-        setEditingCell(null);
-      }
-    };
-
-    // Attach the event listener to the window
-    window.addEventListener("keydown", handleKeyDown);
-
-    // Clean up the event listener on component unmount
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
 
   return (
     <Table className="border-separate border-spacing-y-1">
@@ -161,7 +139,8 @@ export const Sheet = ({
                             itemID={key} // Assign the key of the column
                             type="text"
                             className="bg-transparent focus:outline-none focus:shadow-outline text-center text-lightest-foreground py-2 pl-3 pr-6 "
-                            placeholder="Price"
+                            placeholder={capitalizedWords(key)}
+                            autoComplete="off"
                             value={value || ""}
                             onChange={(e) =>
                               updateStore?.(id, {

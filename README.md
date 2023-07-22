@@ -21,13 +21,17 @@ git clone https://github.com/ruijadom/staking-rewards.git
 # install packages
 cd staking-rewards && pnpm i
 
+# run all steps to setup the db and seed
+pnpm --filter @staking-rewards/prisma run db:setup
 
-# migrate db by prisma
-pnpm --filter @staking-rewards/prisma run db:migrate:dev
-# seed db
-pnpm --filter @staking-rewards/prisma run db:seed
-# run db studio
-pnpm --filter @staking-rewards/prisma run db:studio
+  # migrate db by prisma
+  pnpm --filter @staking-rewards/prisma run db:migrate:dev
+  # seed db
+  pnpm --filter @staking-rewards/prisma run db:seed
+  # run db studio
+  pnpm --filter @staking-rewards/prisma run db:studio
+
+
 # start dev server
 pnpm dev
 ```

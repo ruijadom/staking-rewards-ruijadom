@@ -27,8 +27,8 @@ export default function App() {
     select: (stakings: Stakings) =>
       stakings.filter((staking) =>
         Object.values(staking).some((value) =>
-          value.toString().toLowerCase().includes(queryFilter.toLowerCase())
-        )
+          value.toString().toLowerCase().includes(queryFilter.toLowerCase()),
+        ),
       ),
   });
 
@@ -38,7 +38,6 @@ export default function App() {
 
   useEffect(() => {
     if (stakingList) {
-      console.log(stakingList)
       useStore.setState((state) => ({
         ...state,
         stakingsStore: stakingList,
@@ -53,28 +52,28 @@ export default function App() {
     };
   }, [stakingsStore]);
 
-
-  const result = tableDataMemozied.rows.reduce((acc, item, index) => {
-    tableDataMemozied.columns.forEach((column) => {
-      const id = item.id;
-      const key = `${column.key}${index + 1}`;
-      const value = item[column.value];
-      const expression = key ? `=${key}` : `=${column.key}${index}`;
-      const className = column.key === "A" ? "equation" : undefined;
+// const result = tableDataMemozied.rows.reduce((acc, item, index) => {
+//   tableDataMemozied.columns.forEach((column) => {
+//     const id = item.id;
+//     const key = `${column.key}${index + 1}`;
+//     const value = item[column.value];
+//     const expression = key ? `=${key}` : `=${column.key}${index}`;
+//     const className = column.key === "A" ? "equation" : undefined;
   
-      acc[key] = {
-        id,
-        key,
-        value,
-        expression,
-        className,
-      };
-    });
+//     acc[key] = {
+//       id,
+//       key,
+//       value,
+//       expression,
+//       className,
+//     };
+//   });
   
-    return acc;
-  }, {});
+//   return acc;
+// }, {});
 
-  console.log(result);
+// console.log(result);
+
 
   return (
     <div className="mx-auto my-[68px] max-w-[615px] ">

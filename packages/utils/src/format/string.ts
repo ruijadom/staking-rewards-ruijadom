@@ -109,9 +109,11 @@ export function getColumnKeys<T extends object>(array: T[]): string[] {
  * @example
  * enumerateArrayElements(["foo", "bar", "baz"]) // [{ value: "foo", key: "A" }, { value: "bar", key: "B" }, { value: "baz", key: "C" }]
  */
-export function enumerateArrayElements(inputArray: string[]): { value: string; key: string }[] {
+export function enumerateArrayElements(
+  inputArray: string[],
+): { value: string; key: string }[] {
   return inputArray.map((value, index) => ({
     value,
-    key: String.fromCharCode(65 + index) // Using Unicode code to get alphabetical characters (A, B, C, ...)
+    key: String.fromCharCode(65 + index), // Using Unicode code to get alphabetical characters (A, B, C, ...)
   }));
 }
