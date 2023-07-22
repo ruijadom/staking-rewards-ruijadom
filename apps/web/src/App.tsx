@@ -9,7 +9,7 @@ import { Input } from "@ruijadom/ui";
 // Assets
 import { SearchIcon } from "./lib/icons";
 // Utils
-import { getUniqueKeys } from "@ruijadom/utils";
+import { enumerateArrayElements, getColumnKeys } from "@ruijadom/utils";
 import { Sheet } from "./components/sheet";
 
 export default function App() {
@@ -20,7 +20,6 @@ export default function App() {
 
   const {
     data: stakingList,
-    error,
     isError: isStakingError,
     isLoading: isStakingLoading,
     isSuccess: isStakingSuccess,
@@ -28,8 +27,8 @@ export default function App() {
     select: (stakings: Stakings) =>
       stakings.filter((staking) =>
         Object.values(staking).some((value) =>
-          value.toString().toLowerCase().includes(queryFilter.toLowerCase()),
-        ),
+          value.toString().toLowerCase().includes(queryFilter.toLowerCase())
+        )
       ),
   });
 
@@ -46,14 +45,35 @@ export default function App() {
     }
   }, [stakingList]);
 
-  const stakingKeys = getUniqueKeys(stakingsStore);
-
   const tableDataMemozied = useMemo(() => {
     return {
-      columns: stakingKeys,
+      columns: enumerateArrayElements(getColumnKeys(stakingsStore)),
       rows: stakingsStore,
     };
-  }, [stakingKeys, stakingsStore]);
+  }, [stakingsStore]);
+
+
+  const result = tableDataMemozied.rows.reduce((acc, item, index) => {
+    tableDataMemozied.columns.forEach((column) => {
+      const id = item.id;
+      const key = `${column.key}${index + 1}`;
+      const value = item[column.value];
+      const expression = key ? `=${key}` : `=${column.key}${index}`;
+      const className = column.key === "A" ? "equation" : undefined;
+  
+      acc[key] = {
+        id,
+        key,
+        value,
+        expression,
+        className,
+      };
+    });
+  
+    return acc;
+  }, {});
+
+  console.log(result);
 
   return (
     <div className="mx-auto my-[68px] max-w-[615px] ">

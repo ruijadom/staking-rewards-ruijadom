@@ -10,15 +10,11 @@ interface ResponseProps {
 }
 
 export const stackingData: StakingListProps[] = Array.from(
-  { length: 100 },
+  { length: 4 },
   () => ({
     price: "1000",
     rewardRate: "15",
-    annualReward: "150000032042340",
+    annualReward: "150",
   }),
 );
 
-export const response: ResponseProps = {
-  data: stackingData,
-  currency: "$",
-};

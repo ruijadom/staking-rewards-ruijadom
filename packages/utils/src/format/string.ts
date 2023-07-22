@@ -85,7 +85,7 @@ export function capitalizedWords(str: string): string {
  * @param array The array of objects
  * @returns An array of unique keys
  */
-export function getUniqueKeys<T extends object>(array: T[]): string[] {
+export function getColumnKeys<T extends object>(array: T[]): string[] {
   const keysSet = new Set<string>();
 
   array.forEach((item) => {
@@ -98,4 +98,20 @@ export function getUniqueKeys<T extends object>(array: T[]): string[] {
   });
 
   return Array.from(keysSet);
+}
+
+/**
+ * Transforms an array of strings into an array of objects with "value" and "key" properties.
+ * The "key" property is an alphabetical character starting from 'A'.
+ *
+ * @param inputArray - The array of strings to be transformed.
+ * @returns An array of objects with "value" and "key" properties.
+ * @example
+ * enumerateArrayElements(["foo", "bar", "baz"]) // [{ value: "foo", key: "A" }, { value: "bar", key: "B" }, { value: "baz", key: "C" }]
+ */
+export function enumerateArrayElements(inputArray: string[]): { value: string; key: string }[] {
+  return inputArray.map((value, index) => ({
+    value,
+    key: String.fromCharCode(65 + index) // Using Unicode code to get alphabetical characters (A, B, C, ...)
+  }));
 }

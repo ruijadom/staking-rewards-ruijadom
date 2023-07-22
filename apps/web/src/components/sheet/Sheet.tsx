@@ -16,13 +16,18 @@ import {
   Input,
 } from "@ruijadom/ui";
 // Utils
-import { capitalizedWords, getUniqueKeys } from "@ruijadom/utils";
+import { capitalizedWords } from "@ruijadom/utils";
 import { PencilIcon } from "../../lib/icons";
+
+interface SheetColumnProps {
+  key: string;
+  value: string;
+}
 
 interface SheetProps {
   title: React.ReactNode;
   searchInput: React.ReactNode;
-  columns: string[];
+  columns: SheetColumnProps[];
   rows: Stakings;
   currency: string;
   isError: boolean;
@@ -61,13 +66,13 @@ export const Sheet = ({
       <TableHeader className="sticky top-0 z-10">
         {/* Header slot for table header */}
         <TableRow className="text-sm font-medium bg-darker text-darker-foreground">
-          {columns.map((key) => (
+          {columns.map(({key, value}) => (
             <TableHead
               key={key}
               className={`w-1/3 text-center first:rounded-l-sm last:rounded-r-sm h-[32px]`}
             >
-              {`${capitalizedWords(key)} ${
-                key === "annualReward" ? `in ${currency}` : ""
+              {`${capitalizedWords(value)} ${
+                value === "annualReward" ? `in ${currency}` : ""
               } `}
             </TableHead>
           ))}
@@ -138,6 +143,14 @@ export const Sheet = ({
               ))}
             </TableRow>
           ))}
+
+        {rows.length === 0 && ( 
+          <TableRow>
+            <TableCell className="px-3" colSpan={3}>
+              ...no data
+            </TableCell>
+          </TableRow>
+        )}
       </TableBody>
     </Table>
   );
