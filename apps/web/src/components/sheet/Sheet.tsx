@@ -25,12 +25,17 @@ interface SheetProps {
   columns: string[];
   rows: Stakings;
   currency: string;
-  error: string;
   isError: boolean;
   isLoading: boolean;
   isSuccess: boolean;
-  updateStore: (id: UpdateStakingInput["id"], staking: UpdateStakingInput) => void;
-  mutateStaking: (id: UpdateStakingInput["id"], staking: UpdateStakingInput) => void;
+  updateStore: (
+    id: UpdateStakingInput["id"],
+    staking: UpdateStakingInput,
+  ) => void;
+  mutateStaking: (
+    id: UpdateStakingInput["id"],
+    staking: UpdateStakingInput,
+  ) => void;
 }
 
 export const Sheet = ({
@@ -39,7 +44,6 @@ export const Sheet = ({
   columns,
   rows,
   currency,
-  error,
   isError,
   isLoading,
   isSuccess,
@@ -57,86 +61,84 @@ export const Sheet = ({
       <TableHeader className="sticky top-0 z-10">
         {/* Header slot for table header */}
         <TableRow className="text-sm font-medium bg-darker text-darker-foreground">
-            {columns.map((key) => (
-              <TableHead
-                key={key}
-                className={`w-1/3 text-center first:rounded-l-sm last:rounded-r-sm h-[32px]`}
-              >
-                {`${capitalizedWords(key)} ${
-                  key === "annualReward" ? `in ${currency}` : ""
-                } `}
-              </TableHead>
-            ))}
-          </TableRow>
-      </ TableHeader>
+          {columns.map((key) => (
+            <TableHead
+              key={key}
+              className={`w-1/3 text-center first:rounded-l-sm last:rounded-r-sm h-[32px]`}
+            >
+              {`${capitalizedWords(key)} ${
+                key === "annualReward" ? `in ${currency}` : ""
+              } `}
+            </TableHead>
+          ))}
+        </TableRow>
+      </TableHeader>
 
       <TableBody className="text-xs font-normal before:block before:h-1 before:leading-xl">
-          {isError && (
-            <TableRow>
-              <TableCell className="px-3" colSpan={3}>
-                {error}
-              </TableCell>
-            </TableRow>
-          )}
+        {isError && (
+          <TableRow>
+            <TableCell className="px-3" colSpan={3}>
+              ...something went wrong
+            </TableCell>
+          </TableRow>
+        )}
 
-          {isLoading && (
-            <TableRow>
-              <TableCell className="px-3" colSpan={3}>
-                ...is loading
-              </TableCell>
-            </TableRow>
-          )}
+        {isLoading && (
+          <TableRow>
+            <TableCell className="px-3" colSpan={3}>
+              ...is loading
+            </TableCell>
+          </TableRow>
+        )}
 
-          {isSuccess &&
-            rows.map(({ id, ...staking }) => (
-              <TableRow
-                key={id}
-                className="bg-lightest hover:shadow-focus h-full"
-              >
-                {Object.entries(staking).map(([key, value], index, entries) => (
-                  <TableCell
-                    key={key}
-                    className={`whitespace-nowrap first:rounded-l-sm last:rounded-r-sm h-[32px] ${
-                      index !== entries.length - 1
-                        ? "border-darker border-r"
-                        : ""
-                    }`}
-                  >
-                    <div className="flex">
-                      <div className="relative w-full">
-                        <Input
-                          type="text"
-                          className="bg-transparent text-center text-lightest-foreground py-2 pl-3 pr-6 "
-                          placeholder="Price"
-                          value={value || ""}
-                          onChange={(e) =>
-                            updateStore?.(id, {
-                              id,
-                              ...staking,
-                              [key]: e.target.value,
-                            })
-                          }
-                          onBlur={() => {
-                            mutateStaking?.(id, {
-                              id,
-                              ...staking,
-                              [key]: value,
-                            });
-                          }}
-                        />
-                        <button
-                          type="submit"
-                          className="absolute right-2 top-0 h-full "
-                        >
-                          <PencilIcon />
-                        </button>
-                      </div>
+        {isSuccess &&
+          rows.map(({ id, ...staking }) => (
+            <TableRow
+              key={id}
+              className="bg-lightest hover:shadow-focus h-full"
+            >
+              {Object.entries(staking).map(([key, value], index, entries) => (
+                <TableCell
+                  key={key}
+                  className={`whitespace-nowrap first:rounded-l-sm last:rounded-r-sm h-[32px] ${
+                    index !== entries.length - 1 ? "border-darker border-r" : ""
+                  }`}
+                >
+                  <div className="flex">
+                    <div className="relative w-full">
+                      <Input
+                        type="text"
+                        className="bg-transparent text-center text-lightest-foreground py-2 pl-3 pr-6 "
+                        placeholder="Price"
+                        value={value || ""}
+                        onChange={(e) =>
+                          updateStore?.(id, {
+                            id,
+                            ...staking,
+                            [key]: e.target.value,
+                          })
+                        }
+                        onBlur={() => {
+                          mutateStaking?.(id, {
+                            id,
+                            ...staking,
+                            [key]: value,
+                          });
+                        }}
+                      />
+                      <button
+                        type="submit"
+                        className="absolute right-2 top-0 h-full "
+                      >
+                        <PencilIcon />
+                      </button>
                     </div>
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-        </TableBody>
+                  </div>
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+      </TableBody>
     </Table>
   );
 };

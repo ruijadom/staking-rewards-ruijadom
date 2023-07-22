@@ -44,6 +44,5 @@
       "inputs": ["prisma/schema.prisma"],
       "cache": false
     }
-
   }
 }

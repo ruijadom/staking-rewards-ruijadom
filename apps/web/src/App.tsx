@@ -4,21 +4,12 @@ import { Stakings } from "@ruijadom/api/schema/staking";
 import { trpc } from "./utils/trpc";
 import useStore from "./store/staking";
 
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-  Input,
-} from "@ruijadom/ui";
-
+// UI
+import { Input } from "@ruijadom/ui";
 // Assets
-import { PencilIcon, SearchIcon } from "./lib/icons";
+import { SearchIcon } from "./lib/icons";
 // Utils
-import { capitalizedWords, getUniqueKeys } from "@ruijadom/utils";
+import { getUniqueKeys } from "@ruijadom/utils";
 import { Sheet } from "./components/sheet";
 
 export default function App() {
@@ -37,8 +28,8 @@ export default function App() {
     select: (stakings: Stakings) =>
       stakings.filter((staking) =>
         Object.values(staking).some((value) =>
-          value.toString().toLowerCase().includes(queryFilter.toLowerCase())
-        )
+          value.toString().toLowerCase().includes(queryFilter.toLowerCase()),
+        ),
       ),
   });
 
@@ -54,10 +45,6 @@ export default function App() {
       }));
     }
   }, [stakingList]);
-
-  if (error) {
-    return <p>{error.message}</p>;
-  }
 
   const stakingKeys = getUniqueKeys(stakingsStore);
 
@@ -82,7 +69,6 @@ export default function App() {
         isError={isStakingError}
         isLoading={isStakingLoading}
         isSuccess={isStakingSuccess}
-        error={error ?? "Something went wrong."}
         updateStore={updateStakingStore}
         mutateStaking={mutateStaking}
         searchInput={
