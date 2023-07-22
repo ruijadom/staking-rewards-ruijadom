@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useMemo, useEffect } from "react";
 
 import { Stakings } from "@ruijadom/api/schema/staking";
 import { trpc } from "./utils/trpc";
@@ -19,6 +19,7 @@ import {
 import { PencilIcon, SearchIcon } from "./lib/icons";
 // Utils
 import { capitalizedWords, getUniqueKeys } from "@ruijadom/utils";
+import { Sheet } from "./components/sheet";
 
 export default function App() {
   const { updateStakingStore, stakingsStore, currencyStore } = useStore();
@@ -29,9 +30,9 @@ export default function App() {
   const {
     data: stakingList,
     error,
-    isError,
-    isLoading,
-    isSuccess,
+    isError: isStakingError,
+    isLoading: isStakingLoading,
+    isSuccess: isStakingSuccess,
   } = trpc.getStakings.useQuery(undefined, {
     select: (stakings: Stakings) =>
       stakings.filter((staking) =>
@@ -60,21 +61,31 @@ export default function App() {
 
   const stakingKeys = getUniqueKeys(stakingsStore);
 
-
-  const tableData = {
-    columns: stakingKeys,
-    rows: stakingsStore,
-  }
-
+  const tableDataMemozied = useMemo(() => {
+    return {
+      columns: stakingKeys,
+      rows: stakingsStore,
+    };
+  }, [stakingKeys, stakingsStore]);
 
   return (
-    <div className="mx-auto mt-[68px] max-w-[615px] ">
-      <Table className="border-separate border-spacing-y-1">
-        <TableCaption className="mb-3 space-y-1.5 text-left">
+    <div className="mx-auto my-[68px] max-w-[615px] ">
+      <Sheet
+        title={
           <h1 className="text-xl font-bold text-left">
             Your Personal Staking Calculator
           </h1>
-
+        }
+        columns={tableDataMemozied.columns}
+        rows={tableDataMemozied.rows}
+        currency={currencyStore}
+        isError={isStakingError}
+        isLoading={isStakingLoading}
+        isSuccess={isStakingSuccess}
+        error={error ?? "Something went wrong."}
+        updateStore={updateStakingStore}
+        mutateStaking={mutateStaking}
+        searchInput={
           <form>
             <label
               htmlFor="default-search"
@@ -98,90 +109,8 @@ export default function App() {
               />
             </div>
           </form>
-        </TableCaption>
-        <TableHeader className="sticky top-0 z-10">
-          <TableRow className="text-sm font-medium bg-darker text-darker-foreground">
-            {stakingKeys.map((key) => (
-              <TableHead
-                key={key}
-                className={`w-1/3 text-center first:rounded-l-sm last:rounded-r-sm h-[32px]`}
-              >
-                {`${capitalizedWords(key)} ${
-                  key === "annualReward" ? `in ${currencyStore}` : ""
-                } `}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-
-        <TableBody className="text-xs font-normal before:block before:h-1 before:leading-xl">
-          {isError && (
-            <TableRow>
-              <TableCell className="px-3" colSpan={3}>
-                {error}
-              </TableCell>
-            </TableRow>
-          )}
-
-          {isLoading && (
-            <TableRow>
-              <TableCell className="px-3" colSpan={3}>
-                ...is loading
-              </TableCell>
-            </TableRow>
-          )}
-
-          {isSuccess &&
-            stakingsStore.map(({ id, ...staking }) => (
-              <TableRow
-                key={id}
-                className="bg-lightest hover:shadow-focus h-full"
-              >
-                {Object.entries(staking).map(([key, value], index, entries) => (
-                  <TableCell
-                    key={key}
-                    className={`whitespace-nowrap first:rounded-l-sm last:rounded-r-sm h-[32px] ${
-                      index !== entries.length - 1
-                        ? "border-darker border-r"
-                        : ""
-                    }`}
-                  >
-                    <div className="flex">
-                      <div className="relative w-full">
-                        <Input
-                          type="text"
-                          className="bg-transparent text-center text-lightest-foreground py-2 pl-3 pr-6 "
-                          placeholder="Price"
-                          value={value || ""}
-                          onChange={(e) =>
-                            updateStakingStore(id, {
-                              id,
-                              ...staking,
-                              [key]: e.target.value,
-                            })
-                          }
-                          onBlur={() => {
-                            mutateStaking(id, {
-                              id,
-                              ...staking,
-                              [key]: value,
-                            });
-                          }}
-                        />
-                        <button
-                          type="submit"
-                          className="absolute right-2 top-0 h-full "
-                        >
-                          <PencilIcon />
-                        </button>
-                      </div>
-                    </div>
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
+        }
+      />
     </div>
   );
 }
