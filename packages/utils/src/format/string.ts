@@ -67,17 +67,18 @@ export function formatNumber(amount: number, locale = "en-US"): string {
   }).format(amount);
 }
 
- /**
+/**
  * Capitalizes the first letter of each word in a string.
  * @param str The string to capitalize.
  * @returns The string with the first letter of each word capitalized.
  */
- export function capitalizedWords(str: string): string {
+export function capitalizedWords(str: string): string {
   const words = str.split(/(?=[A-Z])/);
-  const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+  const capitalizedWords = words.map(
+    (word) => word.charAt(0).toUpperCase() + word.slice(1),
+  );
   return capitalizedWords.join(" ");
 }
-
 
 /**
  * Get unique keys from an array of objects
@@ -86,7 +87,7 @@ export function formatNumber(amount: number, locale = "en-US"): string {
  */
 export function getUniqueKeys<T extends object>(array: T[]): string[] {
   const keysSet = new Set<string>();
-  
+
   array.forEach((item) => {
     Object.keys(item).forEach((key) => {
       // Ignore the "id" key as it is not needed in the table header
@@ -95,7 +96,6 @@ export function getUniqueKeys<T extends object>(array: T[]): string[] {
       }
     });
   });
-  
+
   return Array.from(keysSet);
 }
-

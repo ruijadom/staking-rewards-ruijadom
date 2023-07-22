@@ -1,19 +1,49 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "start": {
+      "cache": false
+    },
+    "lint": {},
+    "lint:fix": {},
+    "clean": {
+      "cache": false
+    },
+    "//#clean": {
+      "cache": false
+    },
+    "type-check": {
+      "dependsOn": ["^db:generate"],
+      "cache": false
+    },
     "build": {
       "outputs": ["dist/**"],
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build", "^db:generate"]
     },
     "dev": {
       "dependsOn": ["@ruijadom/prisma#build"],
       "cache": false
     },
-    "clean": {
+    "db:generate": {
+      "inputs": ["@ruijadom/prisma/schema.prisma"],
       "cache": false
     },
-    "start": {
+    "db:seed": {
+      "inputs": ["@ruijadom/prisma/schema.prisma"],
+      "cache": false
+    },
+    "db:push": {
+      "inputs": ["@ruijadom/prisma/schema.prisma"],
+      "cache": false
+    },
+    "db:setup": {
+      "inputs": ["@ruijadom/prisma/schema.prisma"],
+      "cache": false
+    },
+    "db:studio": {
+      "inputs": ["prisma/schema.prisma"],
       "cache": false
     }
+
   }
 }

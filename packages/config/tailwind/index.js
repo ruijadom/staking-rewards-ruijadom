@@ -56,13 +56,12 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        focus: "0.5px 0.5px 2px 2px hsl(var(--darker))"
+        focus: "0.5px 0.5px 2px 2px hsl(var(--darker))",
       },
-    }
+    },
   },
 };
 
 module.exports = config;
-
 
 // box-shadow: inset 0px 5px 10px 0px rgba(0, 0, 0, 0.5);

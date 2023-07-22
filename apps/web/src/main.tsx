@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 
-import "@ruijadom/ui/styles/globals.css"
+import "@ruijadom/ui/styles/globals.css";
 
 import { trpc } from "./utils/trpc";
 
@@ -17,7 +17,7 @@ function MyApp() {
           url: "http://localhost:3001/trpc",
         }),
       ],
-    })
+    }),
   );
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
@@ -31,5 +31,5 @@ function MyApp() {
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <MyApp />
-  </React.StrictMode>
+  </React.StrictMode>,
 );

@@ -83,7 +83,7 @@ app
   })
   .use(
     "/trpc",
-    trpcExpress.createExpressMiddleware({ router: appRouter, createContext })
+    trpcExpress.createExpressMiddleware({ router: appRouter, createContext }),
   )
   .listen(PORT, () => {
     console.log(`server listening at http://localhost:${PORT}`);

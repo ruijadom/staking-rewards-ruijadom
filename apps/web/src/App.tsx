@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
-import { cn } from "@ruijadom/utils";
 
+import { Stakings } from "@ruijadom/api/schema/staking";
 import { trpc } from "./utils/trpc";
 import useStore from "./store/staking";
 
 import {
-  Sheet,
-  SheetBody,
-  SheetCaption,
-  SheetCell,
-  SheetHead,
-  SheetHeader,
-  SheetRow,
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
   Input,
 } from "@ruijadom/ui";
 
@@ -33,13 +33,10 @@ export default function App() {
     isLoading,
     isSuccess,
   } = trpc.getStakings.useQuery(undefined, {
-    select: (stakings) =>
+    select: (stakings: Stakings) =>
       stakings.filter((staking) =>
         Object.values(staking).some((value) =>
-          value
-            .toString()
-            .toLowerCase()
-            .includes(queryFilter.toLowerCase())
+          value.toString().toLowerCase().includes(queryFilter.toLowerCase())
         )
       ),
   });
@@ -62,12 +59,18 @@ export default function App() {
   }
 
   const stakingKeys = getUniqueKeys(stakingsStore);
-  
+
+
+  const tableData = {
+    columns: stakingKeys,
+    rows: stakingsStore,
+  }
+
 
   return (
     <div className="mx-auto mt-[68px] max-w-[615px] ">
-      <Sheet className="border-separate border-spacing-y-1">
-        <SheetCaption className="mb-3 space-y-1.5 text-left">
+      <Table className="border-separate border-spacing-y-1">
+        <TableCaption className="mb-3 space-y-1.5 text-left">
           <h1 className="text-xl font-bold text-left">
             Your Personal Staking Calculator
           </h1>
@@ -95,39 +98,47 @@ export default function App() {
               />
             </div>
           </form>
-        </SheetCaption>
-        <SheetHeader className="sticky top-0 z-10">
-          <SheetRow className="text-sm font-medium bg-darker text-darker-foreground">
+        </TableCaption>
+        <TableHeader className="sticky top-0 z-10">
+          <TableRow className="text-sm font-medium bg-darker text-darker-foreground">
             {stakingKeys.map((key) => (
-              <SheetHead
+              <TableHead
                 key={key}
                 className={`w-1/3 text-center first:rounded-l-sm last:rounded-r-sm h-[32px]`}
               >
                 {`${capitalizedWords(key)} ${
                   key === "annualReward" ? `in ${currencyStore}` : ""
                 } `}
-              </SheetHead>
+              </TableHead>
             ))}
-          </SheetRow>
-        </SheetHeader>
+          </TableRow>
+        </TableHeader>
 
-        <SheetBody className="text-xs font-normal before:block before:h-1 before:leading-xl">
+        <TableBody className="text-xs font-normal before:block before:h-1 before:leading-xl">
+          {isError && (
+            <TableRow>
+              <TableCell className="px-3" colSpan={3}>
+                {error}
+              </TableCell>
+            </TableRow>
+          )}
+
           {isLoading && (
-            <SheetRow>
-              <SheetCell className="px-3" colSpan={3}>
+            <TableRow>
+              <TableCell className="px-3" colSpan={3}>
                 ...is loading
-              </SheetCell>
-            </SheetRow>
+              </TableCell>
+            </TableRow>
           )}
 
           {isSuccess &&
             stakingsStore.map(({ id, ...staking }) => (
-              <SheetRow
+              <TableRow
                 key={id}
                 className="bg-lightest hover:shadow-focus h-full"
               >
                 {Object.entries(staking).map(([key, value], index, entries) => (
-                  <SheetCell
+                  <TableCell
                     key={key}
                     className={`whitespace-nowrap first:rounded-l-sm last:rounded-r-sm h-[32px] ${
                       index !== entries.length - 1
@@ -165,20 +176,12 @@ export default function App() {
                         </button>
                       </div>
                     </div>
-                  </SheetCell>
+                  </TableCell>
                 ))}
-              </SheetRow>
+              </TableRow>
             ))}
-
-          {isError && (
-            <SheetRow>
-              <SheetCell className="px-3" colSpan={3}>
-                {error}
-              </SheetCell>
-            </SheetRow>
-          )}
-        </SheetBody>
-      </Sheet>
+        </TableBody>
+      </Table>
     </div>
   );
 }

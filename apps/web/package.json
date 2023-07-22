@@ -13,14 +13,12 @@
     "@ruijadom/api": "workspace:*",
     "@ruijadom/prisma": "workspace:*",
     "@ruijadom/tailwind-config": "workspace:*",
-    "@ruijadom/tsconfig": "workspace:*",
     "@ruijadom/ui": "workspace:*",
     "@ruijadom/utils": "workspace:*",
     "@tanstack/react-query": "^4.24.4",
     "@trpc/client": "^10.10.0",
     "@trpc/react-query": "^10.10.0",
     "@trpc/server": "^10.10.0",
-    "eslint": "^8.34.0",
     "postcss-import": "^15.1.0",
     "prettier": "^3.0.0",
     "prettier-plugin-tailwindcss": "^0.4.1",
@@ -31,6 +29,8 @@
     "zustand": "^4.3.9"
   },
   "devDependencies": {
+    "@ruijadom/eslint-config": "workspace:*",
+    "@ruijadom/tsconfig": "workspace:*",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react": "^3.1.0",

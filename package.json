@@ -8,6 +8,7 @@
     "start": "turbo run start --parallel",
     "clean": "turbo run clean && rm -rf node_modules",
     "clean:workspaces": "turbo clean",
+    "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{js,cjs,mjs,ts,tsx,md,json}\" --ignore-path .gitignore"
   },
   "devDependencies": {

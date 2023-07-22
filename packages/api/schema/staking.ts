@@ -32,13 +32,7 @@ export const stakingsSchema = z.array(
     price: z.string(),
     rewardRate: z.string(),
     annualReward: z.string(),
-  })
+  }),
 );
 
 export type Stakings = z.TypeOf<typeof stakingsSchema>;
-
-
-
-
-
-

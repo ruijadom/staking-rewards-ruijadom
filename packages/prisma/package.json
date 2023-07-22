@@ -15,6 +15,7 @@
     "@prisma/client": "^4.9.0"
   },
   "devDependencies": {
+    "@ruijadom/eslint-config": "workspace:*",
     "@ruijadom/tsconfig": "workspace:*",
     "@types/node": "^18.11.19",
     "prisma": "^4.9.0",
