@@ -98,6 +98,7 @@ export default function App() {
             (s) => s.id === staking.id
           );
 
+          // Avoding unnecessary mutations
           if(JSON.stringify(stakingToUpdate) !== JSON.stringify(staking)) {
             mutateStaking(staking.id, staking);
             refetchStaking();

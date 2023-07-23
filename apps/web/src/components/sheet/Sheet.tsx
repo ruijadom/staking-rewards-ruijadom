@@ -25,11 +25,11 @@ interface SheetColumnProps {
 }
 
 interface SheetProps {
-  title: React.ReactNode;
-  searchInput: React.ReactNode;
+  title?: React.ReactNode;
+  searchInput?: React.ReactNode;
   columns: SheetColumnProps[];
   rows: Stakings;
-  currency: string;
+  currency?: string;
   isError: boolean;
   isLoading: boolean;
   isSuccess: boolean;
