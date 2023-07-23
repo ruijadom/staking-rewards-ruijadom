@@ -39,13 +39,13 @@ export default function App() {
 
   useEffect(() => {
     console.log("isStakingSuccess", stakingList);
-    if (isStakingSuccess) {
+    if (stakingList) {
       useStore.setState((state) => ({
         ...state,
         stakingsStore: stakingList,
       }));
     }
-  }, [isStakingSuccess]);
+  }, [stakingList]);
 
   const tableDataMemozied = useMemo(() => {
     return {
