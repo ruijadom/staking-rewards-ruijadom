@@ -55,7 +55,7 @@ export const Sheet = ({
   isSuccess,
   isEditable = true,
   updateStore,
-  mutateStaking,
+  mutateStaking
 }: SheetProps): React.ReactElement => {
   const [editingCell, setEditingCell] = useState<{
     rowId: string;
@@ -67,10 +67,11 @@ export const Sheet = ({
 
   useEffect(() => {
     // Focus the input when the editing mode is activated
-    if (editingCell) {
+    if (editingCell !== null) {
       inputRef.current?.focus();
     }
   }, [editingCell]);
+
 
   return (
     <Table className="border-separate border-spacing-y-1">
@@ -134,7 +135,20 @@ export const Sheet = ({
                   >
                     {isEditing || !isEditable ? (
                       <div className="flex">
-                        <div className="relative w-full">
+                        <fieldset
+                          className="relative w-full"
+                          onBlur={(e) => {
+                            // Save the edited value to the state when onBlur is triggered
+                            mutateStaking?.(id, {
+                              id,
+                              ...staking,
+                              [key]: value,
+                            });
+                            setEditingCell(null);
+
+                            e.stopPropagation();
+                          }}
+                        >
                           <Input
                             ref={inputRef} // Assign the input element reference
                             id={id} // Assign the id of the row
@@ -151,15 +165,6 @@ export const Sheet = ({
                                 [key]: e.target.value,
                               })
                             }
-                            onBlur={() => {
-                              // Save the edited value to the state when onBlur is triggered
-                              setEditingCell(null);
-                              mutateStaking?.(id, {
-                                id,
-                                ...staking,
-                                [key]: value,
-                              });
-                            }}
                             onKeyDown={(e) => {
                               if (e.key === "Enter") {
                                 // Save the edited value to the state when the Enter key is pressed
@@ -169,6 +174,8 @@ export const Sheet = ({
                                   ...staking,
                                   [key]: value,
                                 });
+
+                                e.stopPropagation();
                               }
                             }}
                           />
@@ -176,14 +183,13 @@ export const Sheet = ({
                             type="button"
                             className="absolute right-2 top-0 h-full "
                             onClick={(e) => {
-                              // Cancel the editing mode when the Cancel button is clicked
                               setEditingCell(null);
-                              e.stopPropagation(); // Prevent event propagation
+                              e.stopPropagation();
                             }}
                           >
-                            {/* Replace PencilIcon with a CancelIcon */}x
+                            {/* Replace PencilIcon with a CancelIcon */} X
                           </button>
-                        </div>
+                        </fieldset>
                       </div>
                     ) : (
                       <div className="flex">
@@ -201,7 +207,10 @@ export const Sheet = ({
                             <button
                               type="button"
                               className="absolute right-2 top-0 h-full "
-                              onClick={() => setEditingCell({ rowId: id, key })}
+                              onClick={(e) => {
+                                setEditingCell({ rowId: id, key });
+                                e.stopPropagation();
+                              }}
                             >
                               {/* Use PencilIcon to indicate editing */}
                               <PencilIcon />
