@@ -132,7 +132,7 @@ export const Sheet = ({
                         : ""
                     }`}
                   >
-                    {isEditing && !isEditable ? (
+                    {isEditing || !isEditable ? (
                       <div className="flex">
                         <div className="relative w-full">
                           <Input
