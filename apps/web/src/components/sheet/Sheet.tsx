@@ -55,7 +55,7 @@ export const Sheet = ({
   isSuccess,
   isEditable = true,
   updateStore,
-  mutateStaking
+  mutateStaking,
 }: SheetProps): React.ReactElement => {
   const [editingCell, setEditingCell] = useState<{
     rowId: string;
@@ -71,7 +71,6 @@ export const Sheet = ({
       inputRef.current?.focus();
     }
   }, [editingCell]);
-
 
   return (
     <Table className="border-separate border-spacing-y-1">

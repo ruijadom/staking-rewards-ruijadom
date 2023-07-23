@@ -10,10 +10,12 @@ import { Input } from "@ruijadom/ui";
 import { SearchIcon } from "./lib/icons";
 // Utils
 import { enumerateArrayElements, getColumnKeys } from "@ruijadom/utils";
-import { Sheet } from "./components/sheet";
+import { Sheet, generateMatrixData, generateSheetMatrix } from "./components/sheet";
+
+
 
 export default function App() {
-  const { updateStakingStore, stakingsStore, currencyStore } = useStore();
+  const { updateStakingStore, stakingsStore, currencyStore, matrixStakingStore } = useStore();
   const mutation = trpc.updateStaking.useMutation();
 
   const [queryFilter, setQueryFilter] = React.useState("");
@@ -53,29 +55,21 @@ export default function App() {
     };
   }, [stakingsStore]);
 
-  
 
-  // const result = tableDataMemozied.rows.reduce((acc, item, index) => {
-  //   tableDataMemozied.columns.forEach((column) => {
-  //     const id = item.id;
-  //     const key = `${column.key}${index + 1}`;
-  //     const value = item[column.value];
-  //     const expression = key ? `=${key}` : `=${column.key}${index}`;
-  //     const className = column.key === "A" ? "equation" : undefined;
+  useEffect(() => {
+    if (tableDataMemozied) {
+      
+      // TODO: Implement formula evaluation.
 
-  //     acc[key] = {
-  //       id,
-  //       key,
-  //       value,
-  //       expression,
-  //       className,
-  //     };
-  //   });
+      const matrixData = generateSheetMatrix(tableDataMemozied);
 
-  //   return acc;
-  // }, {});
+      useStore.setState((state) => ({
+        ...state,
+        matrixData,
+      }));
+    }
+  }, [tableDataMemozied]);
 
-  // console.log(result);
 
   return (
     <div className="mx-auto my-[68px] max-w-[615px] ">
@@ -93,15 +87,13 @@ export default function App() {
         isSuccess={isStakingSuccess}
         updateStore={updateStakingStore}
         mutateStaking={(_, staking) => {
-          const stakingToUpdate = stakingList?.find(
-            (s) => s.id === staking.id
-          );
+          const stakingToUpdate = stakingList?.find((s) => s.id === staking.id);
 
           // Avoding unnecessary mutations
-          if(JSON.stringify(stakingToUpdate) !== JSON.stringify(staking)) {
+          if (JSON.stringify(stakingToUpdate) !== JSON.stringify(staking)) {
             mutateStaking(staking.id, staking);
             refetchStaking();
-          };
+          }
         }}
         searchInput={
           <form>

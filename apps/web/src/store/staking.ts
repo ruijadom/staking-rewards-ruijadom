@@ -7,6 +7,7 @@ import {
 type StakingState = {
   stakingsStore: Stakings;
   currencyStore: string;
+  matrixStakingStore: object[][];
   updateStakingStore: (
     id: UpdateStakingInput["id"],
     staking: UpdateStakingInput,
@@ -16,6 +17,7 @@ type StakingState = {
 const useStore = create<StakingState>((set) => ({
   stakingsStore: [],
   currencyStore: "$",
+  matrixStakingStore: [],
   updateStakingStore: (id, staking) =>
     set((state) => ({
       stakingsStore: state.stakingsStore.map((obj) =>
