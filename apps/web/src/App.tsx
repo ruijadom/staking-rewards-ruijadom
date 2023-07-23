@@ -20,6 +20,7 @@ export default function App() {
 
   const {
     data: stakingList,
+    refetch: refetchStaking,
     isError: isStakingError,
     isLoading: isStakingLoading,
     isSuccess: isStakingSuccess,
@@ -27,8 +28,8 @@ export default function App() {
     select: (stakings: Stakings) =>
       stakings.filter((staking) =>
         Object.values(staking).some((value) =>
-          value.toString().toLowerCase().includes(queryFilter.toLowerCase()),
-        ),
+          value.toString().toLowerCase().includes(queryFilter.toLowerCase())
+        )
       ),
   });
 
@@ -37,13 +38,14 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (stakingList) {
+    console.log("isStakingSuccess", stakingList);
+    if (isStakingSuccess) {
       useStore.setState((state) => ({
         ...state,
         stakingsStore: stakingList,
       }));
     }
-  }, [stakingList]);
+  }, [isStakingSuccess]);
 
   const tableDataMemozied = useMemo(() => {
     return {
@@ -52,28 +54,29 @@ export default function App() {
     };
   }, [stakingsStore]);
 
-// const result = tableDataMemozied.rows.reduce((acc, item, index) => {
-//   tableDataMemozied.columns.forEach((column) => {
-//     const id = item.id;
-//     const key = `${column.key}${index + 1}`;
-//     const value = item[column.value];
-//     const expression = key ? `=${key}` : `=${column.key}${index}`;
-//     const className = column.key === "A" ? "equation" : undefined;
   
-//     acc[key] = {
-//       id,
-//       key,
-//       value,
-//       expression,
-//       className,
-//     };
-//   });
-  
-//   return acc;
-// }, {});
 
-// console.log(result);
+  // const result = tableDataMemozied.rows.reduce((acc, item, index) => {
+  //   tableDataMemozied.columns.forEach((column) => {
+  //     const id = item.id;
+  //     const key = `${column.key}${index + 1}`;
+  //     const value = item[column.value];
+  //     const expression = key ? `=${key}` : `=${column.key}${index}`;
+  //     const className = column.key === "A" ? "equation" : undefined;
 
+  //     acc[key] = {
+  //       id,
+  //       key,
+  //       value,
+  //       expression,
+  //       className,
+  //     };
+  //   });
+
+  //   return acc;
+  // }, {});
+
+  // console.log(result);
 
   return (
     <div className="mx-auto my-[68px] max-w-[615px] ">
@@ -90,7 +93,16 @@ export default function App() {
         isLoading={isStakingLoading}
         isSuccess={isStakingSuccess}
         updateStore={updateStakingStore}
-        mutateStaking={mutateStaking}
+        mutateStaking={(_, staking) => {
+          const stakingToUpdate = stakingList?.find(
+            (s) => s.id === staking.id
+          );
+
+          if(JSON.stringify(stakingToUpdate) !== JSON.stringify(staking)) {
+            mutateStaking(staking.id, staking);
+            refetchStaking();
+          };
+        }}
         searchInput={
           <form>
             <label
