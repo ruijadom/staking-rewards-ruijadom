@@ -83,14 +83,14 @@ export const Sheet = ({
       </TableCaption>
       <TableHeader className="sticky top-0 z-10">
         {/* Header slot for table header */}
-        <TableRow className="text-sm font-medium bg-darker text-darker-foreground">
+        <TableRow className="text-sm text-center font-medium bg-darker text-darker-foreground">
           {columns.map(({ key, value }) => (
             <TableHead
               key={key}
               className={`w-1/3 text-center first:rounded-l-sm last:rounded-r-sm h-[32px]`}
             >
-              {`${capitalizedWords(value)} ${
-                value === "annualReward" ? `in ${currency}` : ""
+              {` ${capitalizedWords(!!editingCell ? key : value)} ${
+                value === "annualReward" && !editingCell ? `in ${currency}` : ""
               } `}
             </TableHead>
           ))}
