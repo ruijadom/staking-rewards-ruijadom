@@ -33,13 +33,14 @@ interface SheetProps {
   isError: boolean;
   isLoading: boolean;
   isSuccess: boolean;
+  isEditable?: boolean;
   updateStore: (
     id: UpdateStakingInput["id"],
-    staking: UpdateStakingInput,
+    staking: UpdateStakingInput
   ) => void;
   mutateStaking: (
     id: UpdateStakingInput["id"],
-    staking: UpdateStakingInput,
+    staking: UpdateStakingInput
   ) => void;
 }
 
@@ -52,6 +53,7 @@ export const Sheet = ({
   isError,
   isLoading,
   isSuccess,
+  isEditable = true,
   updateStore,
   mutateStaking,
 }: SheetProps): React.ReactElement => {
@@ -130,7 +132,7 @@ export const Sheet = ({
                         : ""
                     }`}
                   >
-                    {isEditing ? (
+                    {isEditing && !isEditable ? (
                       <div className="flex">
                         <div className="relative w-full">
                           <Input
@@ -186,18 +188,25 @@ export const Sheet = ({
                     ) : (
                       <div className="flex">
                         <div className="relative w-full">
-                          <div className="bg-transparent focus:outline-none focus:shadow-outline text-center text-lightest-foreground py-2 pl-3 pr-6 ">
-                            {/* Display the value when not editing */}
+                          {/* Display the value when not editing */}
+                          <div
+                            className={`bg-transparent focus:outline-none focus:shadow-outline text-center text-lightest-foreground py-2 pl-3 pr-${
+                              isEditable ? "6" : " 3"
+                            }`}
+                          >
                             {value}
                           </div>
-                          <button
-                            type="button"
-                            className="absolute right-2 top-0 h-full "
-                            onClick={() => setEditingCell({ rowId: id, key })}
-                          >
-                            {/* Use PencilIcon to indicate editing */}
-                            <PencilIcon />
-                          </button>
+
+                          {isEditable && (
+                            <button
+                              type="button"
+                              className="absolute right-2 top-0 h-full "
+                              onClick={() => setEditingCell({ rowId: id, key })}
+                            >
+                              {/* Use PencilIcon to indicate editing */}
+                              <PencilIcon />
+                            </button>
+                          )}
                         </div>
                       </div>
                     )}
