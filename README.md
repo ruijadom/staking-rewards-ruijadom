@@ -11,6 +11,11 @@ https://github.com/stakingrewards/engineering-challenge/tree/
 - Reactive UI
 - Performant UI with emphasis on a friendly UX
 
+## Todo
+
+- [ ] Implement a mask for the inputs
+- [ ] Implement regex to deal with expressions
+
 ## Getting Started
 
 ```sh
